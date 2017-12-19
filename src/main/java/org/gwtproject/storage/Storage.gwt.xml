@@ -18,19 +18,5 @@
 
   <source path="client" />
 
-  <replace-with class="org.gwtproject.storage.client.StorageImplNonNativeEvents">
-    <when-type-is class="org.gwtproject.storage.client.StorageImpl" />
-    <any>
-      <when-property-is name="user.agent" value="safari" />
-      <when-property-is name="user.agent" value="ie9" />
-      <when-property-is name="user.agent" value="ie10" />
-      <when-property-is name="user.agent" value="gecko1_8" />
-    </any>
-  </replace-with>
-
-  <replace-with class="org.gwtproject.storage.client.StorageImplIE8">
-    <when-type-is class="org.gwtproject.storage.client.StorageImpl" />
-    <when-property-is name="user.agent" value="ie8" />
-  </replace-with>
 </module>
 

@@ -16,7 +16,6 @@
 
 package org.gwtproject.storage.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.PartialSupport;
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -83,7 +82,7 @@ public final class Storage {
     }-*/;
   }
 
-  static final StorageImpl impl = GWT.create(StorageImpl.class);
+  static final StorageImpl impl = new StorageImplNonNativeEvents();
 
   private static Storage localStorage;
 
