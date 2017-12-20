@@ -17,11 +17,18 @@
 package org.gwtproject.storage.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.HandlerRegistration;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.Event;
+import elemental2.dom.EventListener;
+import elemental2.webstorage.WebStorageWindow;
+import jsinterop.annotations.JsFunction;
+import jsinterop.base.Js;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the HTML5 Storage implementation according to the <a
@@ -41,7 +48,19 @@ class StorageImpl {
   public static final String SESSION_STORAGE = "sessionStorage";
 
   protected static List<StorageEvent.Handler> storageEventHandlers;
-  protected static JavaScriptObject jsHandler;
+
+  @JsFunction
+  private interface NativeCallback {
+    void onEvent(StorageEvent event);
+  }
+
+  protected static EventListener jsHandler;
+
+  private static Map<String, elemental2.webstorage.Storage> nameToStorage = new HashMap<String, elemental2.webstorage.Storage>();
+  static {
+    nameToStorage.put(LOCAL_STORAGE, WebStorageWindow.of(DomGlobal.window).localStorage);
+    nameToStorage.put(SESSION_STORAGE, WebStorageWindow.of(DomGlobal.window).sessionStorage);
+  }
 
   /**
    * Handles StorageEvents if a {@link StorageEvent.Handler} is registered.
@@ -103,9 +122,9 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-clear">W3C Web
    *      Storage - Storage.clear()</a>
    */
-  public native void clear(String storage) /*-{
-    $wnd[storage].clear();
-  }-*/;
+  public void clear(String storage) {
+    nameToStorage.get(storage).clear();
+  };
 
   /**
    * Returns the item in the Storage associated with the specified key.
@@ -116,9 +135,9 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-getitem">W3C Web
    *      Storage - Storage.getItem(k)</a>
    */
-  public native String getItem(String storage, String key) /*-{
-    return $wnd[storage].getItem(key);
-  }-*/;
+  public String getItem(String storage, String key) {
+    return nameToStorage.get(storage).getItem(key);
+  }
 
   /**
    * Returns the number of items in this Storage.
@@ -128,9 +147,9 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-l">W3C Web
    *      Storage - Storage.length()</a>
    */
-  public native int getLength(String storage) /*-{
-    return $wnd[storage].length;
-  }-*/;
+  public int getLength(String storage) {
+    return nameToStorage.get(storage).getLength();
+  };
 
   /**
    * Returns the key at the specified index.
@@ -141,15 +160,15 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-key">W3C Web
    *      Storage - Storage.key(n)</a>
    */
-  public native String key(String storage, int index) /*-{
+  public String key(String storage, int index) {
     // few browsers implement retrieval correctly when index is out of range.
     // compensate to preserve API expectation. According to W3C Web Storage spec
     // <a href="http://www.w3.org/TR/webstorage/#dom-storage-key">
     // "If n is greater than or equal to the number of key/value pairs in the
     // object, then this method must return null."
-    return (index >= 0 && index < $wnd[storage].length) ?
-      $wnd[storage].key(index) : null;
-  }-*/;
+    return (index >= 0 && index < nameToStorage.get(storage).getLength()) ?
+        nameToStorage.get(storage).key(index) : null;
+  };
 
   /**
    * Removes the item in the Storage associated with the specified key.
@@ -159,9 +178,9 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-removeitem">W3C
    *      Web Storage - Storage.removeItem(k)</a>
    */
-  public native void removeItem(String storage, String key) /*-{
-    $wnd[storage].removeItem(key);
-  }-*/;
+  public void removeItem(String storage, String key) {
+    nameToStorage.get(storage).removeItem(key);
+  }
 
   /**
    * De-registers an event handler for StorageEvents.
@@ -187,16 +206,27 @@ class StorageImpl {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storage-setitem">W3C Web
    *      Storage - Storage.setItem(k,v)</a>
    */
-  public native void setItem(String storage, String key, String data) /*-{
-    $wnd[storage].setItem(key, data);
-  }-*/;
+  public void setItem(String storage, String key, String data) {
+    nameToStorage.get(storage).setItem(key, data);
+  }
 
-  protected native void addStorageEventHandler0() /*-{
-    @org.gwtproject.storage.client.StorageImpl::jsHandler = $entry(function(event) {
-      @org.gwtproject.storage.client.StorageImpl::handleStorageEvent(Lorg/gwtproject/storage/client/StorageEvent;)(event);
-    });
-    $wnd.addEventListener("storage", 
-      @org.gwtproject.storage.client.StorageImpl::jsHandler, false);
+  protected void addStorageEventHandler0(){
+    StorageImpl.jsHandler = new EventListener() {
+      final NativeCallback wrapped = wrapEntry(new NativeCallback() {
+        @Override public void onEvent(StorageEvent event) {
+          StorageImpl.handleStorageEvent(event);
+        }
+      });
+      @Override public void handleEvent(Event event) {
+        elemental2.webstorage.StorageEvent event1 = (elemental2.webstorage.StorageEvent) event;
+        wrapped.onEvent(Js.<StorageEvent>uncheckedCast(event1));
+      }
+    };
+    DomGlobal.window.addEventListener("storage",  jsHandler, false);
+  }
+
+  private static native <T> T wrapEntry(T func) /*-{
+      return $entry(func);
   }-*/;
 
   /**
@@ -215,16 +245,17 @@ class StorageImpl {
    * 
    * @return the {@link Storage} object that was affected in the event.
    */
-  protected native Storage getStorageFromEvent(StorageEvent event) /*-{
-    if (event.storageArea === $wnd["localStorage"]) {
-      return @org.gwtproject.storage.client.Storage::getLocalStorageIfSupported()();
+  protected Storage getStorageFromEvent(StorageEvent event) {
+    elemental2.webstorage.StorageEvent event1 = Js.uncheckedCast(event);
+    if (event1.storageArea == nameToStorage.get("localStorage")) {
+      return Storage.getLocalStorageIfSupported();
     } else {
-      return @org.gwtproject.storage.client.Storage::getSessionStorageIfSupported()();
+      return Storage.getSessionStorageIfSupported();
     }
-  }-*/;
+  }
 
-  protected native void removeStorageEventHandler0() /*-{
-    $wnd.removeEventListener("storage", 
-      @org.gwtproject.storage.client.StorageImpl::jsHandler, false);
-  }-*/;
+  protected void removeStorageEventHandler0() {
+    DomGlobal.window.removeEventListener("storage",
+      StorageImpl.jsHandler, false);
+  }
 }

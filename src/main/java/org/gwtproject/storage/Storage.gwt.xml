@@ -16,6 +16,7 @@
   <inherits name='com.google.gwt.event.EventBase'/>
   <inherits name='com.google.gwt.useragent.UserAgent'/>
   <inherits name='elemental2.webstorage.WebStorage' />
+  <inherits name='jsinterop.base.Base' />
 
   <source path="client" />
 

@@ -68,6 +68,11 @@
       <artifactId>elemental2-webstorage</artifactId>
       <version>${elemental2version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.jsinterop</groupId>
+      <artifactId>base</artifactId>
+      <version>1.0.0-RC1</version>
+    </dependency>
   </dependencies>
 
   <build>
