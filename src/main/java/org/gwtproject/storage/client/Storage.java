@@ -18,6 +18,8 @@ package org.gwtproject.storage.client;
 
 import com.google.gwt.dom.client.PartialSupport;
 import com.google.gwt.event.shared.HandlerRegistration;
+import elemental2.dom.DomGlobal;
+import elemental2.webstorage.WebStorageWindow;
 
 /**
  * Implements the HTML5 Storage interface.
@@ -69,17 +71,18 @@ public final class Storage {
     static final boolean localStorageSupported = checkStorageSupport(StorageImpl.LOCAL_STORAGE);
     static final boolean sessionStorageSupported = checkStorageSupport(StorageImpl.SESSION_STORAGE);
 
-    // Adapted from modernizr
-    private static native boolean checkStorageSupport(String storage) /*-{
-      var c = '_gwt_dummy_';
+    private static boolean checkStorageSupport(String storage){
+      String c = "_gwt_dummy_";
+      WebStorageWindow window = WebStorageWindow.of(DomGlobal.window);
+      final elemental2.webstorage.Storage storageObj = storage.equals(StorageImpl.LOCAL_STORAGE)? window.localStorage : window.sessionStorage;
       try {
-        $wnd[storage].setItem(c, c);
-        $wnd[storage].removeItem(c);
+        storageObj.setItem(c, c);
+        storageObj.removeItem(c);
         return true;
-      } catch (e) {
+      } catch (Exception e){
         return false;
       }
-    }-*/;
+    }
   }
 
   static final StorageImpl impl = new StorageImplNonNativeEvents();
