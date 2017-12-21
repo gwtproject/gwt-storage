@@ -18,17 +18,18 @@ package org.gwtproject.storage.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import elemental2.dom.DomGlobal;
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
 import elemental2.webstorage.WebStorageWindow;
 import jsinterop.annotations.JsFunction;
 import jsinterop.base.Js;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This is the HTML5 Storage implementation according to the <a
@@ -56,7 +57,8 @@ class StorageImpl {
 
   protected static EventListener jsHandler;
 
-  private static Map<String, elemental2.webstorage.Storage> nameToStorage = new HashMap<String, elemental2.webstorage.Storage>();
+  private static Map<String, elemental2.webstorage.Storage> nameToStorage =
+      new HashMap<String, elemental2.webstorage.Storage>();
   static {
     nameToStorage.put(LOCAL_STORAGE, WebStorageWindow.of(DomGlobal.window).localStorage);
     nameToStorage.put(SESSION_STORAGE, WebStorageWindow.of(DomGlobal.window).sessionStorage);
@@ -210,7 +212,7 @@ class StorageImpl {
     nameToStorage.get(storage).setItem(key, data);
   }
 
-  protected void addStorageEventHandler0(){
+  protected void addStorageEventHandler0() {
     StorageImpl.jsHandler = new EventListener() {
       final NativeCallback wrapped = wrapEntry(new NativeCallback() {
         @Override public void onEvent(StorageEvent event) {

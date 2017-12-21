@@ -56,7 +56,7 @@ public class StorageMap extends AbstractMap<String, String> {
   private class StorageEntry implements Map.Entry<String, String> {
     private final String key;
 
-    public StorageEntry(String key) {
+    StorageEntry(String key) {
       this.key = key;
     }
 
