@@ -31,6 +31,8 @@ import elemental2.webstorage.WebStorageWindow;
 import jsinterop.annotations.JsFunction;
 import jsinterop.base.Js;
 
+import static elemental2.dom.DomGlobal.window;
+
 /**
  * This is the HTML5 Storage implementation according to the <a
  * href="http://www.w3.org/TR/webstorage/#storage-0">standard
@@ -60,8 +62,8 @@ class StorageImpl {
   private static Map<String, elemental2.webstorage.Storage> nameToStorage =
       new HashMap<String, elemental2.webstorage.Storage>();
   static {
-    nameToStorage.put(LOCAL_STORAGE, WebStorageWindow.of(DomGlobal.window).localStorage);
-    nameToStorage.put(SESSION_STORAGE, WebStorageWindow.of(DomGlobal.window).sessionStorage);
+    nameToStorage.put(LOCAL_STORAGE, WebStorageWindow.of(window).localStorage);
+    nameToStorage.put(SESSION_STORAGE, WebStorageWindow.of(window).sessionStorage);
   }
 
   /**
@@ -214,22 +216,12 @@ class StorageImpl {
 
   protected void addStorageEventHandler0() {
     StorageImpl.jsHandler = new EventListener() {
-      final NativeCallback wrapped = wrapEntry(new NativeCallback() {
-        @Override public void onEvent(StorageEvent event) {
-          StorageImpl.handleStorageEvent(event);
-        }
-      });
       @Override public void handleEvent(Event event) {
-        elemental2.webstorage.StorageEvent event1 = (elemental2.webstorage.StorageEvent) event;
-        wrapped.onEvent(Js.<StorageEvent>uncheckedCast(event1));
+        StorageImpl.handleStorageEvent(Js.<StorageEvent>uncheckedCast(event));
       }
     };
-    DomGlobal.window.addEventListener("storage",  jsHandler, false);
+    window.addEventListener("storage",  jsHandler, false);
   }
-
-  private static native <T> T wrapEntry(T func) /*-{
-      return $entry(func);
-  }-*/;
 
   /**
    * Returns the {@link List} of {@link StorageEvent.Handler}s 
@@ -257,7 +249,7 @@ class StorageImpl {
   }
 
   protected void removeStorageEventHandler0() {
-    DomGlobal.window.removeEventListener("storage",
+    window.removeEventListener("storage",
       StorageImpl.jsHandler, false);
   }
 }
