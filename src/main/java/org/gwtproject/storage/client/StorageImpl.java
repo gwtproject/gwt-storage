@@ -24,14 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import elemental2.dom.DomGlobal;
+import static elemental2.dom.DomGlobal.window;
+
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
 import elemental2.webstorage.WebStorageWindow;
 import jsinterop.annotations.JsFunction;
 import jsinterop.base.Js;
-
-import static elemental2.dom.DomGlobal.window;
 
 /**
  * This is the HTML5 Storage implementation according to the <a
