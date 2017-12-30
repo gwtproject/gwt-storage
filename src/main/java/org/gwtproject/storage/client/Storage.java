@@ -16,8 +16,7 @@
 
 package org.gwtproject.storage.client;
 
-import com.google.gwt.dom.client.PartialSupport;
-import com.google.gwt.event.shared.HandlerRegistration;
+import org.gwtproject.event.shared.HandlerRegistration;
 
 import elemental2.dom.DomGlobal;
 import elemental2.webstorage.WebStorageWindow;
@@ -64,7 +63,7 @@ import elemental2.webstorage.WebStorageWindow;
 // Storage API spec specifies this, but browser support poor at the moment.
 // TODO(pdr): Add support for native events once browsers correctly implement
 // storage events.
-@PartialSupport public final class Storage {
+public final class Storage {
 
   static final StorageImpl impl = new StorageImplNonNativeEvents();
   private static Storage localStorage;

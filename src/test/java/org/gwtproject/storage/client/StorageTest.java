@@ -16,9 +16,9 @@
 package org.gwtproject.storage.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Timer;
+import org.gwtproject.event.shared.HandlerRegistration;
 
 /**
  * Tests {@link Storage}.

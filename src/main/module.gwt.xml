@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
+  <inherits name="org.gwtproject.event.Event" />
   <inherits name='elemental2.webstorage.WebStorage' />
   <inherits name='jsinterop.base.Base' />
 </module>

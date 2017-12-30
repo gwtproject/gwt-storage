@@ -16,15 +16,14 @@
 
 package org.gwtproject.storage.client;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerRegistration;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static elemental2.dom.DomGlobal.window;
+
+import org.gwtproject.event.shared.HandlerRegistration;
 
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
@@ -76,7 +75,7 @@ class StorageImpl {
       try {
         handler.onStorageChange(event);
       } catch (Throwable t) {
-        GWT.reportUncaughtException(t);
+        GwtMigrationUtils.reportUncaughtException(t);
       }
     }
   }

@@ -17,3 +17,9 @@ Migration of gwt2-storage to ensure gwt3 compatibility.
 
  - Native events are not yet correctly supported, they are emulated.
  - Testing multiple browser sessions in a single Gwt Unit Test is not supported by Gwt. Is it?
+
+### Issues resulting from migration
+
+ - It's unknown what mechanism should be used to substitute `GWT.reportUncaughtException`. See 
+  method `org.gwtproject.storage.client.StorageImpl.handleStorageEvent`
+  
