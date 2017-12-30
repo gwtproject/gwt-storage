@@ -16,7 +16,13 @@
 
 package org.gwtproject.storage.client;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import jsinterop.annotations.JsConstructor;
+import jsinterop.annotations.JsOverlay;
+import jsinterop.annotations.JsPackage;
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
+import jsinterop.base.Js;
+import jsinterop.base.JsPropertyMap;
 
 /**
  * Represents a Storage Event.
@@ -41,7 +47,9 @@ import com.google.gwt.core.client.JavaScriptObject;
  *      href="https://developer.apple.com/safari/library/documentation/AppleApplications/Reference/WebKitDOMRef/StorageEvent_idl/Classes/StorageEvent/index.html">Safari
  *      StorageEvent reference</a>
  */
-public final class StorageEvent extends JavaScriptObject {
+@JsType(isNative = true, namespace = JsPackage.GLOBAL, name = "StorageEvent")
+public final class StorageEvent {
+
   /**
    * Represents an Event handler for {@link StorageEvent}s.
    * 
@@ -63,7 +71,29 @@ public final class StorageEvent extends JavaScriptObject {
     void onStorageChange(StorageEvent event);
   }
 
-  protected StorageEvent() {
+  @JsConstructor
+  private StorageEvent(String type, Object init) {
+
+  }
+
+  /**
+   * Returns a newly created and correctly initialized event.
+   * <p>
+   * Note: Seemingly the embedded browser used in unit test does not have the StorageEvent
+   * constructor. This forces us to emulate the actions performed by this constructor according
+   * to the HTML5 Spec.
+   * </p>
+   * @param init Dictionary with initial values for the event
+   * @return the newly created event object
+   */
+  @JsOverlay
+  static StorageEvent createEvent(Object init) {
+    final StorageEvent storageEvent = new StorageEvent("storage", init);
+    final JsPropertyMap<Object> se = Js.cast(storageEvent);
+    final JsPropertyMap<Object> initSe = Js.cast(init);
+    initSe.forEach(key -> se.set(key, initSe.get(key)));
+    se.set("type", "storage");
+    return storageEvent;
   }
 
   /**
@@ -73,9 +103,8 @@ public final class StorageEvent extends JavaScriptObject {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storageevent-key">W3C
    *      Web Storage - StorageEvent.key</a>
    */
-  public native String getKey() /*-{
-    return this.key;
-  }-*/;
+  @JsProperty
+  public native String getKey();
 
   /**
    * Returns the new value of the key being changed.
@@ -85,9 +114,8 @@ public final class StorageEvent extends JavaScriptObject {
    *      href="http://www.w3.org/TR/webstorage/#dom-storageevent-newvalue">W3C
    *      Web Storage - StorageEvent.newValue</a>
    */
-  public native String getNewValue() /*-{
-    return this.newValue;
-  }-*/;
+  @JsProperty
+  public native String getNewValue();
 
   /**
    * Returns the old value of the key being changed.
@@ -97,9 +125,8 @@ public final class StorageEvent extends JavaScriptObject {
    *      href="http://www.w3.org/TR/webstorage/#dom-storageevent-oldvalue">W3C
    *      Web Storage - StorageEvent.oldValue</a>
    */
-  public native String getOldValue() /*-{
-    return this.oldValue;
-  }-*/;
+  @JsProperty
+  public native String getOldValue();
 
   /**
    * Returns the {@link Storage} object that was affected.
@@ -109,6 +136,7 @@ public final class StorageEvent extends JavaScriptObject {
    *      href="http://www.w3.org/TR/webstorage/#dom-storageevent-storagearea">W3C
    *      Web Storage - StorageEvent.storageArea</a>
    */
+  @JsOverlay
   public Storage getStorageArea() {
     return Storage.impl.getStorageFromEvent(this);
   }
@@ -120,7 +148,6 @@ public final class StorageEvent extends JavaScriptObject {
    * @see <a href="http://www.w3.org/TR/webstorage/#dom-storageevent-url">W3C
    *      Web Storage - StorageEvent.url</a>
    */
-  public native String getUrl() /*-{
-    return this.url || this.uri;  // Older Safari browsers have 'uri' instead of 'url'
-  }-*/;
+  @JsProperty
+  public native String getUrl();
 }
