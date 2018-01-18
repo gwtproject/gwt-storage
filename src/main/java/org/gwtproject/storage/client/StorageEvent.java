@@ -73,7 +73,6 @@ public final class StorageEvent {
 
   @JsConstructor
   private StorageEvent(String type, Object init) {
-
   }
 
   /**
