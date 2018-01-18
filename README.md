@@ -1,5 +1,7 @@
 # Gwt3-Storage
 
+[![Build Status](https://travis-ci.org/avierax/gwt-storage.svg?branch=master)](https://travis-ci.org/avierax/gwt-storage)
+
 Migration of gwt2-storage to ensure gwt3 compatibility.
 
 ## Roadmap
