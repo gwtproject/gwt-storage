@@ -1,196 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.gwtproject.storage</groupId>
-  <artifactId>storage</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
-  <packaging>gwt-lib</packaging>
+    <groupId>org.gwtproject.storage</groupId>
+    <artifactId>gwt-storage-parent</artifactId>
 
-  <name>Gwt Storage Module</name>
-  <description>The purpose of this module, what it provides and how it can be used</description>
-  <url>https://github.com/avierax/gwt-storage</url>
+    <version>dev</version>
 
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
+    <packaging>pom</packaging>
 
-  <developers>
-    <developer>
-      <name>Ariel Viera</name>
-      <email>ariel.viera@gmail.com</email>
-      <organization>tissca</organization>
-      <organizationUrl>www.tissca.com</organizationUrl>
-    </developer>
-  </developers>
+    <name>GWT Storage Parent</name>
+    <description>Parent POM containing the gwt-storage module and the test modules (gwt2- and j2cl-tests)</description>
+    <url>https://github.com/gwtproject/gwt-storage</url>
 
-  <scm>
-    <connection>scm:git:git://github.com/avierax/gwt-storage.git</connection>
-    <developerConnection>scm:git:ssh://github.com:avierax/gwt-storage.git</developerConnection>
-    <url>https://github.com/avierax/gwt-storage/tree/master</url>
-  </scm>
+    <organization>
+        <name>The GWT Project Authors</name>
+        <url>https://github.com/gwtproject</url>
+    </organization>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <elemental2version>1.0.0-RC1</elemental2version>
-  </properties>
+    <developers>
+        <developer>
+            <name>The GWT Authors</name>
+            <organization>The GWT Project Authors</organization>
+            <url>https://github.com/gwtproject</url>
+        </developer>
+    </developers>
 
-  <dependencies>
-    <!-- no gwt or elemental2 yet! add them or other existing dependencies as needed -->
+    <scm>
+        <connection>scm:git:git://github.com/gwtproject/gwt-storage.git</connection>
+        <developerConnection>scm:git:ssh://github.com/gwtproject/gwt-storage.git</developerConnection>
+        <url>https://github.com/gwtproject/gwt-storage/tree/master</url>
+    </scm>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.gwtproject.event</groupId>
-      <artifactId>gwt-event</artifactId>
-      <version>HEAD-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>2.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>2.8.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.elemental2</groupId>
-      <artifactId>elemental2-webstorage</artifactId>
-      <version>${elemental2version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.jsinterop</groupId>
-      <artifactId>base</artifactId>
-      <version>1.0.0-RC1</version>
-    </dependency>
-  </dependencies>
+    <inceptionYear>2019</inceptionYear>
 
-  <build>
+    <modules>
+        <module>gwt-storage</module>
+        <module>gwt-storage-gwt2-tests</module>
+        <module>gwt-storage-j2cl-tests</module>
+    </modules>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-        </configuration>
-      </plugin>
+    <properties>
+        <revision>HEAD-SNAPSHOT</revision>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.17</version>
-        <executions>
-          <execution>
-            <id>validate</id>
-            <phase>validate</phase>
-            <configuration>
-              <encoding>UTF-8</encoding>
-              <consoleOutput>true</consoleOutput>
-              <failsOnError>true</failsOnError>
-              <configLocation>gwt-checkstyle.xml</configLocation>
-            </configuration>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-      <plugin>
-        <groupId>net.ltgt.gwt.maven</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>1.0-rc-9</version>
-        <extensions>true</extensions>
-        <configuration>
-          <moduleName>org.gwtproject.storage.Storage</moduleName>
-        </configuration>
-      </plugin>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-    </plugins>
+        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+        <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
+        <maven.flatten.plugin>1.2.2</maven.flatten.plugin>
+        <maven.fmt.plugin>2.9</maven.fmt.plugin>
+        <maven.install.plugin>3.0.0-M1</maven.install.plugin>
+        <maven.license.plugin>3.0</maven.license.plugin>
+        <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
+    </properties>
 
-  </build>
-
-  <!-- Specify that we will push snapshots and releases to sonatype's repos -->
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
-  <profiles>
-    <!-- release profile to create sources, javadoc, and sign all artifacts before uploading -->
-    <profile>
-      <id>release</id>
-      <build>
+    <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9.1</version>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- see http://central.sonatype.org/pages/working-with-pgp-signatures.html for more detail -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>${maven.fmt.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven.license.plugin}</version>
+                <configuration>
+                    <header>LICENSE.header</header>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <skipExistingHeaders>true</skipExistingHeaders>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <excludes>
+                        <exclude>**/README.md</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>**/LICENSE.header</exclude>
+                        <exclude>**/AUTHORS</exclude>
+                        <exclude>**/src/test/resources/**</exclude>
+                        <exclude>**/src/main/resources/**</exclude>
+                        <exclude>**/pom.xml</exclude>
+                        <exclude>**/.flattened-pom.xml</exclude>
+                        <exclude>**/war/**</exclude>
+                        <exclude>**/deploy/**</exclude>
+                        <exclude>**/gwt-unitcache/**</exclude>
+                    </excludes>
+                    <properties>
+                        <year>${project.inceptionYear}</year>
+                        <name>${project.organization.name}</name>
+                    </properties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${maven.flatten.plugin}</version>
+                <configuration>
+                    <flattenMode>oss</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
-  
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal dependencies -->
+            <dependency>
+                <groupId>org.gwtproject.storage</groupId>
+                <artifactId>gwt-storage</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
