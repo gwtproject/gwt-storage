@@ -20,7 +20,7 @@
 
         <gwt.timer.version>1.0.0-RC1</gwt.timer.version>
         <gwt.version>2.9.0</gwt.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencies>
